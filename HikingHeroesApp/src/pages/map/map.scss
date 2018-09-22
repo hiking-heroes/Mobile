@@ -1,6 +1,13 @@
 page-map {
+	.map-container {
+		position: absolute;
+		top: 12%;
+		bottom: 0pt;
+		width: 100%;
+		height: 88%;
+	}
 	#map {
-		height: 80%;
-		border: 1px solid red;
+		width: 100%;
+		height: 100%;
 	}
 }

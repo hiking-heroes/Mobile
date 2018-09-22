@@ -1,13 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { RestProvider } from '../../providers/rest/rest';
 import leaflet from 'leaflet';
-
-/**
- * Generated class for the MapPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -17,12 +11,16 @@ import leaflet from 'leaflet';
 export class MapPage {
 	@ViewChild('map') mapContainer: ElementRef;
 	map: any;
-	constructor(public navCtrl: NavController, public navParams: NavParams) {
-	
+	constructor(public navCtrl: NavController,
+				public navParams: NavParams,
+				public restProvider: RestProvider) {
 	}
 
 	ionViewDidEnter() {
-		this.loadmap();
+		console.log(this.map);
+		if (this.map == undefined) {
+			this.loadmap();
+		}
 	}
 	
 	loadmap() {
