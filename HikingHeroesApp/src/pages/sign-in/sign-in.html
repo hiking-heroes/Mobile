@@ -1,0 +1,27 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Sign In</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<form padding-top (submit)="signIn()">
+		<ion-item>
+			<ion-label stacked>Phone number</ion-label>
+			<ion-input readonly="false" required [(ngModel)]="signInData.phone" name="phone" type="tel" pattern="[0-9]+$" max="999999999999999" maxlength="15" placeholder="Phone number" text-center></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label stacked>Email</ion-label>
+			<ion-input readonly="false" required [(ngModel)]="signInData.email" name="email" type="email" placeholder="Email" text-center></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label stacked>Password</ion-label>
+			<ion-input required [(ngModel)]="signInData.password" name="password" [type]="types" style="-webkit-text-security: disc;" maxlength="15" placeholder="Password" text-center></ion-input>
+		</ion-item>
+		<p text-center>
+		    <button ion-button round icon-end color="green" type="submit">
+			    Apply<ion-icon name="checkmark-circle-outline"></ion-icon>
+		    </button>
+		</p>
+	</form>
+</ion-content>

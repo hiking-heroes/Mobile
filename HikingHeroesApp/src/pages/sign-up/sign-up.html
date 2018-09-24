@@ -1,0 +1,31 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Sign Up</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<form padding-top (submit)="signUp()">
+		<ion-item>
+			<ion-label stacked>Name</ion-label>
+			<ion-input readonly="false" required [(ngModel)]="signUpData.first_name" name="first_name" type="text" pattern="[a-zA-Z]+$" placeholder="Your name" text-center></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label stacked>Surname</ion-label>
+			<ion-input readonly="false" required [(ngModel)]="signUpData.last_name" name="last_name" type="text" pattern="[a-zA-Z]+$" placeholder="Your surname" text-center></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label stacked>Email</ion-label>
+			<ion-input readonly="false" required [(ngModel)]="signUpData.email" name="email" type="email" placeholder="Email" text-center></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label stacked>Password</ion-label>
+			<ion-input required [(ngModel)]="signUpData.password" name="password" [type]="types" style="-webkit-text-security: disc;" maxlength="15" placeholder="Password" text-center></ion-input>
+		</ion-item>
+		<p text-center>
+		    <button ion-button round icon-end color="green" type="submit">
+			    Apply<ion-icon name="checkmark-circle-outline"></ion-icon>
+		    </button>
+		</p>
+	</form>
+</ion-content>

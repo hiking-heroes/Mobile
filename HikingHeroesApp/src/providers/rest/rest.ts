@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class RestProvider {
 
-	apiUrl = 'https://jsonplaceholder.typicode.com/';
+	apiUrl = 'https://bigcitylife.pythonanywhere.com/api/v1/';
 	naviApiUrl = 'https://staging-api.naviaddress.com/api/v1.5/';
 
 	constructor(public http: HttpClient) {

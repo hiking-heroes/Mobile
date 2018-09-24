@@ -92,7 +92,7 @@ export class MapPage {
 	getAddress() {
 		console.log(this.address);
 		if(this.address){
-		console.log(this.address);
+			console.log(this.address);
 			this.showLoader();	
 			this.restProvider.getAddress(this.address).then((result) => {
 				this.loading.dismiss();
