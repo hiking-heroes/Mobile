@@ -11,6 +11,7 @@ import { Injectable } from '@angular/core';
 export class RestProvider {
 
 	apiUrl = 'https://jsonplaceholder.typicode.com/';
+	naviApiUrl = 'https://staging-api.naviaddress.com/api/v1.5/';
 
 	constructor(public http: HttpClient) {
 		console.log('Hello RestProvider Provider');
@@ -67,5 +68,98 @@ export class RestProvider {
 				});
 		});
 	}
+	
+	update(){
+		return new Promise((resolve, reject) => {
+			let headers = new HttpHeaders();
+			headers.append('X-Auth-Token', localStorage.getItem('token')); // Change below
+			this.http.post(this.apiUrl+'update', {token:localStorage.getItem('token')}, {headers: headers})
+				.subscribe(res => { // Change below
+					
+					var phoneNumber = localStorage.getItem('phoneNumber');
+					localStorage.clear();
+					localStorage.setItem('phoneNumber', phoneNumber); // Till this
+					
+					console.log(res); // log
+					resolve(res);
+				}, (err) => {
+					console.log(err); // log
+					reject(err);
+				});
+		});
+	}
+	
+	createAddress(addressData) {
+		return new Promise((resolve, reject) => {
+			let headers = new HttpHeaders();
+			headers.append('Content-Type', 'application/json');
+			this.http.post(this.apiUrl+'createAddress', JSON.stringify(addressData), {headers: headers})
+				.subscribe(res => {
+					
+					
+					
+					console.log(res); // log
+					resolve(res);
+				}, (err) => {
+					console.log(err); // log
+					reject(err);
+				});
+		});	  
+	}
+	
+	updateAddress(addressData) {
+		return new Promise((resolve, reject) => {
+			let headers = new HttpHeaders();
+			headers.append('Content-Type', 'application/json');
+			this.http.post(this.apiUrl+'updateAddress', JSON.stringify(addressData), {headers: headers})
+				.subscribe(res => {
+					
+					
+					
+					console.log(res); // log
+					resolve(res);
+				}, (err) => {
+					console.log(err); // log
+					reject(err);
+				});
+		});	  
+	}
+	
+	deleteAddress(addressData) {
+		return new Promise((resolve, reject) => {
+			let headers = new HttpHeaders();
+			headers.append('Content-Type', 'application/json');
+			this.http.post(this.apiUrl+'deleteAddress', JSON.stringify(addressData), {headers: headers})
+				.subscribe(res => {
+					
+					
+					
+					console.log(res); // log
+					resolve(res);
+				}, (err) => {
+					console.log(err); // log
+					reject(err);
+				});
+		});	  
+	}
+	
+	getAddress(address) {
+		return new Promise((resolve, reject) => {
+			let headers = new HttpHeaders();
+			headers.append('Content-Type', 'application/json');
+			this.http.get(this.naviApiUrl+'Addresses/'+address, JSON.stringify(address), {headers: headers})
+				.subscribe(res => {
+					
+					
+					
+					console.log(res); // log
+					resolve(res);
+				}, (err) => {
+					console.log(err); // log
+					reject(err);
+				});
+		});	  
+	}
+	
 
 }

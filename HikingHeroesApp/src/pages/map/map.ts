@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { RestProvider } from '../../providers/rest/rest';
 import leaflet from 'leaflet';
 
@@ -10,10 +10,15 @@ import leaflet from 'leaflet';
 })
 export class MapPage {
 	@ViewChild('map') mapContainer: ElementRef;
-	map: any;
+	loading : any;
+	map : any;
+	data : any;
+	address : String = '7/0022';
 	constructor(public navCtrl: NavController,
 				public navParams: NavParams,
-				public restProvider: RestProvider) {
+				public restProvider: RestProvider, 
+				public loadingCtrl: LoadingController, 
+				private toastCtrl: ToastController) {
 	}
 
 	ionViewDidEnter() {
@@ -83,5 +88,47 @@ export class MapPage {
 		});
 	}
 */
+
+	getAddress() {
+		console.log(this.address);
+		if(this.address){
+		console.log(this.address);
+			this.showLoader();	
+			this.restProvider.getAddress(this.address).then((result) => {
+				this.loading.dismiss();
+				this.data = result;
+				console.log(this.data.result.point.lat);
+				console.log(this.data.result.point.lng);
+				
+				leaflet.marker([this.data.result.point.lat, this.data.result.point.lng]).addTo(this.map).bindPopup(this.data.result.point.lat + "<br>" + this.data.result.point.lng);
+				
+			}, (err) => {
+				this.loading.dismiss();
+			    this.presentToast(err);
+			});
+		} else {
+			this.presentToast("Field required!");
+		}
+	}
+	
+	showLoader(){
+		this.loading = this.loadingCtrl.create({
+			content: 'Authenticating...'
+		});
+		this.loading.present();
+	}
+
+	presentToast(msg) {
+		let toast = this.toastCtrl.create({
+			message: msg,
+			duration: 3000,
+			position: 'bottom',
+			dismissOnPageChange: true
+		});
+		toast.onDidDismiss(() => {
+			console.log('Dismissed toast');
+		});
+		toast.present();
+	}
 
 }
