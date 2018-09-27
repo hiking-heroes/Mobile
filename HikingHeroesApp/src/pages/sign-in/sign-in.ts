@@ -12,7 +12,8 @@ export class SignInPage {
 	loading: any;
 	data: any;
 	loggedIn : boolean = false;
-	signInData = { phone:'', email:'', password:'' };
+	guest : boolean = true;
+	signInData = { email:'', password:'' };
 	
 	constructor(public navCtrl: NavController,
 				public navParams: NavParams,
@@ -21,27 +22,27 @@ export class SignInPage {
 				private toastCtrl: ToastController) {
 					if (localStorage.getItem('token') === null) {
 						this.loggedIn = false;
+						this.guest = true;
 					} else {
 						this.loggedIn = true;
+						this.guest = false;
 					}
 	}
 	
 	signIn() {
-		if(this.signInData.phone && this.signInData.password){
-			this.showLoader();	
-			localStorage.setItem('phone', this.signInData.phone);
-			console.log("here");
+		if(this.signInData.email && this.signInData.password){
+			this.showLoader();
 			this.restProvider.signIn(this.signInData).then((result) => {
 				this.loading.dismiss();
 				this.data = result;
-				if (this.data.result == "True") {
-					this.loading.dismiss();
+				if (this.data.guest == false) {
 					localStorage.setItem('token', this.data.token); // Add
+					localStorage.setItem('events', this.data.events);
 					this.loggedIn = true;
+					this.guest = false;
 					this.navCtrl.pop();
 				} else {
-				this.loading.dismiss();
-					this.presentToast(this.data.result);
+					this.presentToast(this.data.guest);
 				}
 			}, (err) => {
 				this.loading.dismiss();
@@ -49,6 +50,7 @@ export class SignInPage {
 				
 					localStorage.setItem('token', "123");
 					this.loggedIn = true;
+					this.guest = false;
 					this.navCtrl.pop();
 				
 			});

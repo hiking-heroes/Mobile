@@ -13,6 +13,7 @@ export class SignUpPage {
 	loading: any;
 	data: any;
 	loggedIn : boolean = false;
+	guest: boolean = true;
 	signUpData = { first_name:'', last_name:'', email:'', password:'' };
 	
 constructor(public navCtrl: NavController,
@@ -22,30 +23,32 @@ constructor(public navCtrl: NavController,
 				private toastCtrl: ToastController) {
 					if (localStorage.getItem('token') === null) {
 						this.loggedIn = false;
+						this.guest = true;
 					} else {
 						this.loggedIn = true;
+						this.guest = false;
 					}
 	}
 	
 	signUp() {
 		if(this.signUpData.first_name && this.signUpData.last_name && this.signUpData.email && this.signUpData.password){
 			this.showLoader();
-			console.log("here");
 			this.restProvider.signUp(this.signUpData).then((result) => {
 				this.loading.dismiss();
 				this.data = result;
-				if (this.data.result == "True") {
-					this.loading.dismiss();
-					console.log(data);
+				console.log(this.data);
+				if (this.data.guest == false) {
+					localStorage.setItem('token', this.data.token); // Add
+					localStorage.setItem('events', this.data.events);
+					this.loggedIn = true;
+					this.guest = false;
 					this.navCtrl.pop();
 				} else {
-					this.loading.dismiss();
-					this.presentToast(this.data.result);
+					this.presentToast(this.data.guest);
 				}
 			}, (err) => {
 				this.loading.dismiss();
 			    this.presentToast(err);
-				this.navCtrl.pop();
 			});
 		} else {
 			this.presentToast("Fields required!");

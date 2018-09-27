@@ -10,7 +10,8 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class RestProvider {
 
-	apiUrl = 'https://bigcitylife.pythonanywhere.com/api/v1/';
+	apiUrl = 'https://bigcitylife.pythonanywhere.com/api/v1';
+//	apiUrl = 'http://localhost:8100';
 	naviApiUrl = 'https://staging-api.naviaddress.com/api/v1.5/';
 
 	constructor(public http: HttpClient) {
@@ -20,8 +21,8 @@ export class RestProvider {
 	signIn(credentials) {
 		return new Promise((resolve, reject) => {
 			let headers = new HttpHeaders();
-			headers.append('Content-Type', 'application/json');
-			this.http.post(this.apiUrl+'signIn', JSON.stringify(credentials), {headers: headers})
+			headers.append('content-type', 'application/json');
+			this.http.post(this.apiUrl+'/users/signin', credentials, {headers: headers})
 				.subscribe(res => {
 					console.log(res); // log
 					resolve(res);
@@ -35,8 +36,9 @@ export class RestProvider {
 	signUp(userData) {
 		return new Promise((resolve, reject) => {
 			let headers = new HttpHeaders();
-			headers.append('Content-Type', 'application/json');
-			this.http.post(this.apiUrl+'signUp', JSON.stringify(userData), {headers: headers})
+			headers.append('content-type', 'application/json');
+			console.log(JSON.stringify(userData));
+			this.http.post(this.apiUrl+'/users/signup', userData, {headers: headers})
 				.subscribe(res => {
 					console.log(res); // log
 					resolve(res);
@@ -51,7 +53,7 @@ export class RestProvider {
 		return new Promise((resolve, reject) => {
 			let headers = new HttpHeaders();
 			headers.append('X-Auth-Token', localStorage.getItem('token')); // Change below
-			this.http.post(this.apiUrl+'signOut', {token:localStorage.getItem('token')}, {headers: headers})
+			this.http.post(this.apiUrl+'/users/signout', {token:localStorage.getItem('token')}, {headers: headers})
 				.subscribe(res => { // Change below
 					var phoneNumber = localStorage.getItem('phoneNumber');
 					localStorage.clear();
@@ -92,8 +94,8 @@ export class RestProvider {
 	createAddress(addressData) {
 		return new Promise((resolve, reject) => {
 			let headers = new HttpHeaders();
-			headers.append('Content-Type', 'application/json');
-			this.http.post(this.apiUrl+'createAddress', JSON.stringify(addressData), {headers: headers})
+			headers.append('content-type', 'application/json');
+			this.http.post(this.apiUrl+'createAddress', addressData, {headers: headers})
 				.subscribe(res => {
 					
 					
@@ -110,8 +112,8 @@ export class RestProvider {
 	updateAddress(addressData) {
 		return new Promise((resolve, reject) => {
 			let headers = new HttpHeaders();
-			headers.append('Content-Type', 'application/json');
-			this.http.post(this.apiUrl+'updateAddress', JSON.stringify(addressData), {headers: headers})
+			headers.append('content-type', 'application/json');
+			this.http.post(this.apiUrl+'updateAddress', addressData, {headers: headers})
 				.subscribe(res => {
 					
 					
@@ -128,8 +130,8 @@ export class RestProvider {
 	deleteAddress(addressData) {
 		return new Promise((resolve, reject) => {
 			let headers = new HttpHeaders();
-			headers.append('Content-Type', 'application/json');
-			this.http.post(this.apiUrl+'deleteAddress', JSON.stringify(addressData), {headers: headers})
+			headers.append('content-type', 'application/json');
+			this.http.post(this.apiUrl+'deleteAddress', addressData, {headers: headers})
 				.subscribe(res => {
 					
 					
@@ -146,8 +148,8 @@ export class RestProvider {
 	getAddress(address) {
 		return new Promise((resolve, reject) => {
 			let headers = new HttpHeaders();
-			headers.append('Content-Type', 'application/json');
-			this.http.get(this.naviApiUrl+'Addresses/'+address, JSON.stringify(address), {headers: headers})
+			headers.append('content-type', 'application/json');
+			this.http.get(this.naviApiUrl+"Addresses/"+address, {headers: headers})
 				.subscribe(res => {
 					
 					
@@ -161,5 +163,21 @@ export class RestProvider {
 		});	  
 	}
 	
+	
+	getEvents(events) {
+		return new Promise((resolve, reject) => {
+			let headers = new HttpHeaders();
+			console.log(events);
+			headers.append('content-type', 'application/json');
+			this.http.get(this.apiUrl+"/events", {headers: headers})
+				.subscribe(res => {
+					console.log(res); // log
+					resolve(res);
+				}, (err) => {
+					console.log(err); // log
+					reject(err);
+				});
+		});	  
+	}
 
 }
