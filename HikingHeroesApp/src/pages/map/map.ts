@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { RestProvider } from '../../providers/rest/rest';
+import { EventCreationPage } from '../event-creation/event-creation';
 import leaflet from 'leaflet';
 
 @IonicPage()
@@ -10,10 +11,16 @@ import leaflet from 'leaflet';
 })
 export class MapPage {
 	@ViewChild('map') mapContainer: ElementRef;
+	
+	tagsData = { tags:'' };
+	
 	loading : any;
+	guest: boolean = true;
 	map : any;
 	data : any;
 	address : String = '7/0022';
+	
+	time : boolean = false;
 	
 //	lt_lat : number;
 //	lt_lng : number;
@@ -27,6 +34,11 @@ export class MapPage {
 				public restProvider: RestProvider, 
 				public loadingCtrl: LoadingController, 
 				private toastCtrl: ToastController) {
+					if (localStorage.getItem('token') === null) {
+						this.guest = true;
+					} else {
+						this.guest = false;
+					}
 	}
 
 	ionViewWillEnter() {
@@ -46,7 +58,10 @@ export class MapPage {
 		let map = this.map;
 		let popup = leaflet.popup();
 		let restProvider = this.restProvider;
+		let navCtrl = this.navCtrl;
 		let getEvents = this.getEvents;
+		let addMarker;
+		let time = this.time;
 		
 		console.log("this");
 	//	console.log(addMarker);
@@ -76,12 +91,12 @@ export class MapPage {
 		//this.map = map;
 
 		this.map.on('moveend', function(e){
-
+			console.log(localStorage.getItem('time'));
 			this.map = map;
 			this.restProvider = restProvider;
 			let bounds = map.getBounds();
 		//	let mapBounds = { lt_lat : this.map.getBounds().getSouthWest().lat, lt_lng : this.map.getBounds().getSouthWest().lng, rb_lat : this.map.getBounds().getNorthEast().lat, rb_lng : this.map.getBounds().getNorthEast().lng };
-			let mapBounds = "? lt_lat=" + bounds.getSouthWest().lat + " & lt_lng=" + bounds.getSouthWest().lng + " & rb_lat=" + bounds.getNorthEast().lat + " & rb_lng=" + bounds.getNorthEast().lng;
+			let mapBounds = "?lt_lat=" + bounds.getSouthWest().lat + "&lt_lng=" + bounds.getSouthWest().lng + "&rb_lat=" + bounds.getNorthEast().lat + "&rb_lng=" + bounds.getNorthEast().lng;
 		/*	if (this.mapBounds != undefined) {
 				console.log(this.mapBounds);
 				this.mapBounds.lt_lat = map.getBounds().getSouthWest().lat;
@@ -102,7 +117,7 @@ export class MapPage {
 					console.log(err);
 				});
 				
-				events[0] = {id : 1, latitude : 56.222, longitude: 38.333};
+				events[0] = {id : 1, latitude : 60.222, longitude: 29.333};
 				console.log(events);
 				for (var k in events) {
 					var j : any = 0;
@@ -114,7 +129,7 @@ export class MapPage {
 					if (j == mapEvents.length) {
 						console.log(events[k]);
 						mapEvents[length] = events[k];
-						leaflet.marker([events[k].latitude, events[k].longitude]).addTo(map).bindPopup(events[k].latitude + "<br>" + events[k].longitude);
+						leaflet.marker([events[k].latitude, events[k].longitude]).addTo(map).bindPopup(events[k].latitude + "<br>" + events[k].longitude + "<br>" + time);
 					}
 				} // Надо удаление - и поменять структуру.
 			/*	
@@ -147,6 +162,7 @@ export class MapPage {
 		
 		this.map.on('click', function(e) {
 			console.log(e);
+			console.log(this.data.tags);
 			let lat = e.latlng.lat;
 			let lng = e.latlng.lng;
 			
@@ -156,9 +172,18 @@ export class MapPage {
 			};
 			this.addMarker = addMarker;
 			
+			let marker = leaflet.marker([lat, lng]).on('click', function(ee) {
+				navCtrl.push(EventCreationPage, {latitude : lat, longitude : lng});
+			});
+			marker.addTo(map).bindPopup(lat + "<br>" + lng + "<br>" + "Click marker to create an event").openPopup();
 			
-			let msg = "Latitude: " + lat + " <br> " + "Longitude: " + lng + '<br><button onclick="addMarker('+lat+','+lng+')">Add event</button>';
-			popup.setLatLng(e.latlng).setContent(msg).openOn(map);
+		//	addMarker('+lat+','+lng+')
+			
+		//	let msg = "Latitude: " + lat + " <br> " + "Longitude: " + lng + '<br><button onclick="console.log(5)">Add event</button>';
+		//	popup.setLatLng(e.latlng).setContent(msg).openOn(map);
+			
+			
+			
 		});
 		
 	}
@@ -245,6 +270,15 @@ export class MapPage {
 		} else {
 	//		this.presentToast("Field required!");
 		}
+	}
+	
+	signOut() {
+		localStorage.setItem('time', 'true');
+		this.time = true;
+		
+	//	localStorage.removeItem('token');
+	//	this.guest = true;
+	//	this.navCtrl.setRoot(this.navCtrl.getActive().component);
 	}
 	
 	showLoader(){

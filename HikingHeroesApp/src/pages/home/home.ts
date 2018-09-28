@@ -46,7 +46,7 @@ export class HomePage {
 	}
 	
 	signOut() {
-		this.showLoader();	
+	//	this.showLoader();	
 	/*	this.restProvider.signOut().then((result) => {
 			this.loading.dismiss();
 			this.data = result;
@@ -58,7 +58,7 @@ export class HomePage {
 		});
 	*/
 		localStorage.removeItem('token');
-		this.loading.dismiss();
+	//	this.loading.dismiss();
 		this.guest = true;
 		this.navCtrl.setRoot(this.navCtrl.getActive().component);
 	}

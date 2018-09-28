@@ -1,8 +1,36 @@
+<ion-header>
+	<ion-navbar> <!-- transparent hideBackButton -->
+		<button *ngIf="guest == true" ion-button small clear color="black" (click)="toSignIn()">
+			Sign In
+		</button>
+		<button *ngIf="guest == true" ion-button small clear color="black" (click)="toSignUp()">
+			Sign Up
+		</button>
+<!--		<button *ngIf="loggedIn == true" ion-button small clear color="black" (click)="signOut()">
+			Sign Out
+		</button>
+		
+-->
+		<ion-item transparent>
+			<ion-label stacked>Tags</ion-label>
+			<ion-input readonly="false" required [(ngModel)]="tagsData.tags" name="tags" type="text" placeholder="Tags" text-center></ion-input>
+		</ion-item>
+		<ion-buttons end>
+			<button *ngIf="guest == false" ion-button icon-only clear style="zoom: 1.3;" (click)="signOut()">
+				<ion-icon ios="ios-log-out-outline" md="ios-log-out-outline"></ion-icon>
+			</button>
+		</ion-buttons>
+	</ion-navbar>
+</ion-header>
 
 <ion-content>
-	<div id="btn">
-		<button ion-button (click)="getAddress()">getAddress</button>
-	</div>
+	<!--<div id="btn">
+		<ion-item>
+			<ion-label stacked>Tags</ion-label>
+			<ion-input readonly="false" required [(ngModel)]="tagsData.tags" name="tags" type="text" placeholder="Tags" text-center></ion-input>
+		</ion-item>
+		<!--<button ion-button (click)="getAddress()">getAddress</button>
+	</div> -->
 	<div class="map-container">
 		<div id="map">
 		<!--	<button ion-button (click)="onButtonClick($event)">Demo</button> -->

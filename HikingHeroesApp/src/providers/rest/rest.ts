@@ -91,15 +91,23 @@ export class RestProvider {
 		});
 	}
 	
-	createAddress(addressData) {
+	createEvent(eventData) {
 		return new Promise((resolve, reject) => {
-			let headers = new HttpHeaders();
-			headers.append('content-type', 'application/json');
-			this.http.post(this.apiUrl+'createAddress', addressData, {headers: headers})
+	/*		let headerJson = {
+			'Authorization':localStorage.getItem('token')
+			}
+			let headers = new HttpHeaders(headerJson);
+					//	headers = headers.append('Authorization', localStorage.getItem('token'));
+			//	console.log(headers);
+		//	this.http.post(this.apiUrl+'/events', eventData, {headers: {'Authorization': 'token'}})
+		//	headers.append('content-type', 'application/json');
+		*/
+			
+		//	console.log(JSON.stringify(eventData));
+		
+		let headers = new HttpHeaders().set("Authorization", "token");
+			this.http.post(this.apiUrl+'/events', eventData, {headers})
 				.subscribe(res => {
-					
-					
-					
 					console.log(res); // log
 					resolve(res);
 				}, (err) => {
@@ -169,7 +177,7 @@ export class RestProvider {
 			let headers = new HttpHeaders();
 			console.log(events);
 			headers.append('content-type', 'application/json');
-			this.http.get(this.apiUrl+"/events", {headers: headers})
+			this.http.get(this.apiUrl+"/events"+events, {headers: headers})
 				.subscribe(res => {
 					console.log(res); // log
 					resolve(res);

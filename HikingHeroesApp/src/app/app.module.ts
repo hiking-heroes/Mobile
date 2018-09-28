@@ -9,6 +9,8 @@ import { MapPage } from '../pages/map/map';
 import { SettingsPage } from '../pages/settings/settings';
 import { SignInPage } from '../pages/sign-in/sign-in';
 import { SignUpPage } from '../pages/sign-up/sign-up';
+import { EventCreationPage } from '../pages/event-creation/event-creation';
+import { EventRegistrationPage } from '../pages/event-registration/event-registration';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -24,7 +26,9 @@ import { RestProvider } from '../providers/rest/rest';
 	MapPage,
 	SettingsPage,
 	SignInPage,
-	SignUpPage
+	SignUpPage,
+	EventCreationPage,
+	EventRegistrationPage
   ],
   imports: [
     BrowserModule,
@@ -39,7 +43,9 @@ import { RestProvider } from '../providers/rest/rest';
 	MapPage,
 	SettingsPage,
 	SignInPage,
-	SignUpPage
+	SignUpPage,
+	EventCreationPage,
+	EventRegistrationPage
   ],
   providers: [
     StatusBar,
