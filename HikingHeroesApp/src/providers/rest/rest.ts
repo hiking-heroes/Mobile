@@ -37,7 +37,6 @@ export class RestProvider {
 		return new Promise((resolve, reject) => {
 			let headers = new HttpHeaders();
 			headers.append('content-type', 'application/json');
-			console.log(JSON.stringify(userData));
 			this.http.post(this.apiUrl+'/users/signup', userData, {headers: headers})
 				.subscribe(res => {
 					console.log(res); // log
@@ -73,15 +72,9 @@ export class RestProvider {
 	
 	update(){
 		return new Promise((resolve, reject) => {
-			let headers = new HttpHeaders();
-			headers.append('X-Auth-Token', localStorage.getItem('token')); // Change below
-			this.http.post(this.apiUrl+'update', {token:localStorage.getItem('token')}, {headers: headers})
+			let headers = new HttpHeaders().set("Authorization", "Bearer " + localStorage.getItem('token'));
+			this.http.get(this.apiUrl+'/events/my', {headers})
 				.subscribe(res => { // Change below
-					
-					var phoneNumber = localStorage.getItem('phoneNumber');
-					localStorage.clear();
-					localStorage.setItem('phoneNumber', phoneNumber); // Till this
-					
 					console.log(res); // log
 					resolve(res);
 				}, (err) => {
@@ -89,6 +82,21 @@ export class RestProvider {
 					reject(err);
 				});
 		});
+	}
+	
+	getEvents(events) {
+		return new Promise((resolve, reject) => {
+			let headers = new HttpHeaders();
+			headers.append('content-type', 'application/json');
+			this.http.get(this.apiUrl+"/events"+events, {headers: headers})
+				.subscribe(res => {
+					console.log(res); // log
+					resolve(res);
+				}, (err) => {
+					console.log(err); // log
+					reject(err);
+				});
+		});	  
 	}
 	
 	createEvent(eventData) {
@@ -105,7 +113,7 @@ export class RestProvider {
 			
 		//	console.log(JSON.stringify(eventData));
 		
-		let headers = new HttpHeaders().set("Authorization", "token");
+		let headers = new HttpHeaders().set("Authorization", "Bearer " + localStorage.getItem('token'));
 			this.http.post(this.apiUrl+'/events', eventData, {headers})
 				.subscribe(res => {
 					console.log(res); // log
@@ -162,23 +170,6 @@ export class RestProvider {
 					
 					
 					
-					console.log(res); // log
-					resolve(res);
-				}, (err) => {
-					console.log(err); // log
-					reject(err);
-				});
-		});	  
-	}
-	
-	
-	getEvents(events) {
-		return new Promise((resolve, reject) => {
-			let headers = new HttpHeaders();
-			console.log(events);
-			headers.append('content-type', 'application/json');
-			this.http.get(this.apiUrl+"/events"+events, {headers: headers})
-				.subscribe(res => {
 					console.log(res); // log
 					resolve(res);
 				}, (err) => {

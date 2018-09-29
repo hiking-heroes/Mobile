@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController, ToastController
 import { RestProvider } from '../../providers/rest/rest';
 import { SignInPage } from '../sign-in/sign-in';
 import { SignUpPage } from '../sign-up/sign-up';
+import { EventDetailsPage } from '../event-details/event-details';
 
 @IonicPage()
 @Component({
@@ -30,11 +31,17 @@ export class HomePage {
 	
 	ionViewWillEnter(){
 		if (localStorage.getItem('token') === null) {
-				this.guest = true;
+			this.guest = true;
 		} else {
 			this.guest = false;
+			this.items = JSON.parse(localStorage.getItem('events'));
 		}
-		console.log(this.guest + " enter");
+		console.log(this.items);
+	}
+	
+	eventDetails(item){
+		this.navCtrl.push(EventDetailsPage, {item: item});
+	//	console.log(item);
 	}
 	
 	toSignIn() {
@@ -45,9 +52,21 @@ export class HomePage {
 		this.navCtrl.push(SignUpPage);
 	}
 	
+	update() {
+		this.showLoader();	
+		this.restProvider.update().then((result) => {
+			this.loading.dismiss();
+			this.data = result;
+			this.items = this.data.events;
+		}, (err) => {
+			this.loading.dismiss();
+		    this.presentToast(err);
+		});
+	}
+	
 	signOut() {
-	//	this.showLoader();	
-	/*	this.restProvider.signOut().then((result) => {
+	/*	this.showLoader();	
+		this.restProvider.signOut().then((result) => {
 			this.loading.dismiss();
 			this.data = result;
 			this.loggedIn = false;
@@ -58,7 +77,6 @@ export class HomePage {
 		});
 	*/
 		localStorage.removeItem('token');
-	//	this.loading.dismiss();
 		this.guest = true;
 		this.navCtrl.setRoot(this.navCtrl.getActive().component);
 	}
@@ -66,7 +84,7 @@ export class HomePage {
 	
 	showLoader(){
 		this.loading = this.loadingCtrl.create({
-			content: 'Authenticating...'
+			content: 'Updating...'
 		});
 		this.loading.present();
 	}

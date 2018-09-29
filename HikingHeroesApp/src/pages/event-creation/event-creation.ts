@@ -12,7 +12,8 @@ export class EventCreationPage {
 	loading: any;
 	data: any;
 	guest : boolean = true;
-	eventData = { lat:'', lng:'', name:'', event_start:'', event_end:'', description:'', web:'', type:'', default_lang:'', lang:'', map_visibility:true, seats:'' };
+	// eventData = { lat:'', lng:'', name:'', event_start:'', event_end:'', description:'', web:'', type:'', default_lang:'', lang:'', map_visibility:true, seats:0, tags:[] };
+	eventData = { lat:'', lng:'', name:'', event_start:'', event_end:'', seats:'', tags:[] };
 
 	constructor(public navCtrl: NavController,
 				public navParams: NavParams,
@@ -26,7 +27,6 @@ export class EventCreationPage {
 						this.eventData.lat = navParams.get('latitude');
 						this.eventData.lng = navParams.get('longitude');
 					}
-					console.log(this.eventData);
 				}
 
 	ionViewDidLoad() {
@@ -35,11 +35,13 @@ export class EventCreationPage {
 	
 	createEvent() {
 		if(this.eventData.name && this.eventData.event_start && this.eventData.event_end){
+			this.eventData.tags[0] = this.eventData.name; // sdsd
 			this.showLoader();
 			console.log(this.eventData);
 			this.restProvider.createEvent(this.eventData).then((result) => {
 				this.loading.dismiss();
 				this.data = result;
+				console.log(this.data);
 				if (this.data.Answer == 201) {
 					console.log("event created");
 					this.navCtrl.pop();
@@ -51,6 +53,7 @@ export class EventCreationPage {
 			    this.presentToast(err);
 			});
 		} else {
+			console.log(this.eventData);
 			this.presentToast("Fields required!");
 		}		
 	}
@@ -58,7 +61,7 @@ export class EventCreationPage {
 	
 	showLoader(){
 		this.loading = this.loadingCtrl.create({
-			content: 'Authenticating...'
+			content: 'Creating event...'
 		});
 		this.loading.present();
 	}

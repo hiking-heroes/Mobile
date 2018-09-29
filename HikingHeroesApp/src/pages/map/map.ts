@@ -2,6 +2,8 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { RestProvider } from '../../providers/rest/rest';
 import { EventCreationPage } from '../event-creation/event-creation';
+import { SignInPage } from '../sign-in/sign-in';
+import { SignUpPage } from '../sign-up/sign-up';
 import leaflet from 'leaflet';
 
 @IonicPage()
@@ -13,19 +15,15 @@ export class MapPage {
 	@ViewChild('map') mapContainer: ElementRef;
 	
 	tagsData = { tags:'' };
+	mode = 'false';
 	
 	loading : any;
 	guest: boolean = true;
 	map : any;
 	data : any;
 	address : String = '7/0022';
+	historyTimeout = { dateFrom:'', dateTo:'' };
 	
-	time : boolean = false;
-	
-//	lt_lat : number;
-//	lt_lng : number;
-//	rb_lat : number;
-//	rb_lng : number;
 	mapBounds = { lt_lat : 0, lt_lng : 0, rb_lat : 0, rb_lng : 0 };
 	events = [];
 	
@@ -40,9 +38,39 @@ export class MapPage {
 						this.guest = false;
 					}
 	}
-
+	
+	ionViewDidLoad() {
+		console.log(this.map);
+		if (localStorage.getItem('token') === null) {
+			this.guest = true;
+		} else {
+			this.guest = false;
+		}
+		if (this.map == undefined) {
+			this.map = leaflet.map("map").fitWorld();
+			this.loadmap();
+		}
+	}
+	
+	ionViewWillEnter() {
+	//	console.log(this.map);
+		if (localStorage.getItem('token') === null) {
+			this.guest = true;
+		} else {
+			this.guest = false;
+		}
+		if (this.map == undefined) {
+			this.map = leaflet.map("map").fitWorld();
+		}
+	}
+/*
 	ionViewWillEnter() {
 		console.log(this.map);
+		if (localStorage.getItem('token') === null) {
+			this.guest = true;
+		} else {
+			this.guest = false;
+		}
 		if (this.map == undefined) {
 			this.map = leaflet.map("map").fitWorld();
 		}
@@ -51,7 +79,7 @@ export class MapPage {
 	ionViewDidEnter() {
 		this.loadmap();
 	}
-	
+	*/
 	loadmap() {
 		let events = [];
 		let mapEvents = [];
@@ -61,9 +89,10 @@ export class MapPage {
 		let navCtrl = this.navCtrl;
 		let getEvents = this.getEvents;
 		let addMarker;
-		let time = this.time;
-		
-		console.log("this");
+		let BCLIcon = leaflet.icon({
+			iconUrl: 'assets/icon/BCLIcon.png',
+			iconSize: [26, 29]
+		});
 	//	console.log(addMarker);
 		
 	//	this.getEvents();
@@ -79,19 +108,21 @@ export class MapPage {
 		}).on('locationfound', (e) => {
 			console.log('found you');
 			let markerGroup = leaflet.featureGroup();
-			let marker: any = leaflet.marker([e.latitude, e.longitude]).on('click', () => {
-				alert('Marker clicked');
-			})
-			markerGroup.addLayer(marker);
+		//	let marker: any = leaflet.marker([e.latitude, e.longitude]).on('click', () => {
+		//		alert('Marker clicked');
+		//	})
+		//	markerGroup.addLayer(marker);
 			this.map.addLayer(markerGroup);
+		//	this.map.zoomIn(5);
 		}).on('locationerror', (err) => {
+			let markerGroup = leaflet.featureGroup();
+			this.map.addLayer(markerGroup);
 			// alert(err.message);
 		})
 		
 		//this.map = map;
 
 		this.map.on('moveend', function(e){
-			console.log(localStorage.getItem('time'));
 			this.map = map;
 			this.restProvider = restProvider;
 			let bounds = map.getBounds();
@@ -108,6 +139,7 @@ export class MapPage {
 			*/	
 				restProvider.getEvents(mapBounds).then((result) => {
 					this.data = result;
+					console.log(this.data);
 					if (true) {
 						events = this.data.events;
 					} else {
@@ -117,19 +149,19 @@ export class MapPage {
 					console.log(err);
 				});
 				
-				events[0] = {id : 1, latitude : 60.222, longitude: 29.333};
+			//	events[0] = {id : 1, latitude : 60.222, longitude: 29.333, container: 786, naviaddress: 67866, seats: {free: 5, total: 10}};
 				console.log(events);
-				for (var k in events) {
+				for (var k = 0; k < events.length; k++) {
 					var j : any = 0;
-					for (j in mapEvents) {
+					for (j = 0; j < mapEvents.length; j++) {
 						if (events[k].id == mapEvents[j].id) {
 							break;
 						}
 					}
 					if (j == mapEvents.length) {
 						console.log(events[k]);
-						mapEvents[length] = events[k];
-						leaflet.marker([events[k].latitude, events[k].longitude]).addTo(map).bindPopup(events[k].latitude + "<br>" + events[k].longitude + "<br>" + time);
+						mapEvents[j] = events[k];
+						leaflet.marker([events[k].latitude, events[k].longitude], {icon: BCLIcon}).addTo(map).bindPopup(events[k].name + "<br>" + "[" + events[k].container + "]" + events[k].naviaddress + "<br>" + "Seats: " + events[k].seats.free + "/" + events[k].seats.total);
 					}
 				} // Надо удаление - и поменять структуру.
 			/*	
@@ -161,36 +193,32 @@ export class MapPage {
 		});
 		
 		this.map.on('click', function(e) {
-			console.log(e);
-			console.log(this.data.tags);
-			let lat = e.latlng.lat;
-			let lng = e.latlng.lng;
-			
-			let addMarker = function(lat, lng) {
-				console.log(lat);
-				console.log(lng);
-			};
-			this.addMarker = addMarker;
-			
-			let marker = leaflet.marker([lat, lng]).on('click', function(ee) {
-				navCtrl.push(EventCreationPage, {latitude : lat, longitude : lng});
-			});
-			marker.addTo(map).bindPopup(lat + "<br>" + lng + "<br>" + "Click marker to create an event").openPopup();
-			
-		//	addMarker('+lat+','+lng+')
-			
-		//	let msg = "Latitude: " + lat + " <br> " + "Longitude: " + lng + '<br><button onclick="console.log(5)">Add event</button>';
-		//	popup.setLatLng(e.latlng).setContent(msg).openOn(map);
-			
-			
-			
+			console.log(localStorage.getItem('mode'));
+			if(localStorage.getItem('mode') == 'true') {
+			//	console.log(e);
+			//	console.log(this.data.tags);
+				let lat = e.latlng.lat;
+				let lng = e.latlng.lng;
+				
+			//	let addMarker = function(lat, lng) {
+			//		console.log(lat);
+			//		console.log(lng);
+			//	};
+			//	this.addMarker = addMarker;
+				
+				let marker = leaflet.marker([lat, lng], {icon: BCLIcon}).on('click', function(ee) {
+					navCtrl.push(EventCreationPage, {latitude : lat, longitude : lng});
+					map.removeLayer(marker);
+				});
+				marker.addTo(map).bindPopup("Tap this marker" + "<br>" + "to attach an event").openPopup();
+				
+			//	addMarker('+lat+','+lng+')
+				
+			//	let msg = "Latitude: " + lat + " <br> " + "Longitude: " + lng + '<br><button onclick="console.log(5)">Add event</button>';
+			//	popup.setLatLng(e.latlng).setContent(msg).openOn(map);
+			}
 		});
 		
-	}
-	
-	
-	getCoordinates() {
-		console.log(this.map);
 	}
 	
 	getEvents() {
@@ -211,45 +239,6 @@ export class MapPage {
 		}
 	}
 	
-/*	ionViewDidLoad() {
-		this.platform.ready().then(() => {
-			console.log('ionViewDidLoad MapPage');
-			this.loadMap();
-		});
-	}
-	
-	onButtonClick() {
-
-		// Get the location of you
-		this.map.getMyLocation().then((location: MyLocation) => {
-			console.log(JSON.stringify(location, null ,2));
-
-			// Move the map camera to the location with animation
-			this.map.animateCamera({
-				target: location.latLng,
-				zoom: 17,
-				tilt: 30
-			});
-
-			// add a marker
-			let marker: Marker = this.map.addMarkerSync({
-				title: '@ionic-native/google-maps plugin!',
-				snippet: 'This plugin is awesome!',
-				position: location.latLng,
-				animation: GoogleMapsAnimation.BOUNCE
-			});
-
-			// show the infoWindow
-			marker.showInfoWindow();
-			
-			// If clicked it, bounce it
-			marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-				marker.setAnimation(GoogleMapsAnimation.BOUNCE);
-			});
-		});
-	}
-*/
-
 	getAddress() {
 		console.log(this.address);
 		if(this.address){
@@ -272,13 +261,18 @@ export class MapPage {
 		}
 	}
 	
-	signOut() {
-		localStorage.setItem('time', 'true');
-		this.time = true;
-		
-	//	localStorage.removeItem('token');
-	//	this.guest = true;
-	//	this.navCtrl.setRoot(this.navCtrl.getActive().component);
+	toSignIn() {
+		this.navCtrl.push(SignInPage);
+	}
+	
+	toSignUp() {
+		this.navCtrl.push(SignUpPage);
+	}
+	
+	signOut() {	
+		localStorage.removeItem('token');
+		this.guest = true;
+		this.navCtrl.setRoot(this.navCtrl.getActive().component);
 	}
 	
 	showLoader(){

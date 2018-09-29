@@ -1,17 +1,8 @@
-<!--
-  Generated template for the EventCreationPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>Event Creation</ion-title>
-  </ion-navbar>
-
+	<ion-navbar color="primary">
+		<ion-title>Event Creation</ion-title>
+	</ion-navbar>
 </ion-header>
-
 
 <ion-content padding>
 	<form padding-top (submit)="createEvent()">
@@ -21,11 +12,11 @@
 		</ion-item>
 		<ion-item>
 			<ion-label stacked>Event start</ion-label>
-			<ion-datetime displayFormat="MMM DD YYYY HH mm" [(ngModel)]="eventData.event_start" name="event_start" placeholder="Event start"></ion-datetime>
+			<ion-datetime displayFormat="MMM DD, YYYY HH:mm" [(ngModel)]="eventData.event_start" name="event_start" placeholder="Event start" text-center></ion-datetime>
 		</ion-item>
 		<ion-item>
 			<ion-label stacked>Event end</ion-label>
-			<ion-datetime displayFormat="MMM DD YYYY HH mm" [(ngModel)]="eventData.event_end" name="event_end" placeholder="Event end"></ion-datetime>
+			<ion-datetime displayFormat="MMM DD, YYYY HH:mm" [(ngModel)]="eventData.event_end" name="event_end" placeholder="Event end" text-center></ion-datetime>
 		</ion-item>
 		<ion-item>
 			<ion-label stacked>Description</ion-label>
@@ -33,7 +24,7 @@
 		</ion-item>
 		<ion-item>
 			<ion-label stacked>Seats</ion-label>
-			<ion-input required [(ngModel)]="eventData.seats" name="seats" type="text" placeholder="Seats" text-center></ion-input>
+			<ion-input required [(ngModel)]="eventData.seats" name="seats" type="number" placeholder="Seats" text-center></ion-input>
 		</ion-item>
 		<p text-center>
 		    <button ion-button round icon-end color="green" type="submit">

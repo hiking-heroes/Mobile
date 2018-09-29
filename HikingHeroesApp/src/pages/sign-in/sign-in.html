@@ -1,11 +1,12 @@
 <ion-header>
-	<ion-navbar>
+	<ion-navbar color="primary">
 		<ion-title>Sign In</ion-title>
 	</ion-navbar>
 </ion-header>
 
 <ion-content padding>
-	<form padding-top (submit)="signIn()">
+	<h3 *ngIf="guest == true"><p text-center> Sign in with your <br> Naviaddress account.</p></h3>	
+	<form (submit)="signIn()">
 		<ion-item>
 			<ion-label stacked>Email</ion-label>
 			<ion-input readonly="false" required [(ngModel)]="signInData.email" name="email" type="email" placeholder="Email" text-center></ion-input>

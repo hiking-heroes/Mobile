@@ -1,0 +1,18 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<ion-title>Event Details</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<h3> This event details: </h3>
+	<ion-list inset no-lines>
+		<ion-item> <b> Name: </b> {{item.name}} </ion-item>
+		<ion-item> <b> Address: </b> [{{item.container}}]{{item.naviaddress}} </ion-item>
+		<ion-item> <b> Starts: </b> {{item.start}} </ion-item>
+		<ion-item> <b> Ends: </b> {{item.end}} </ion-item>
+		<ion-item> <b> Seats: </b> {{item.seats.free}}/{{item.seats.total}} </ion-item>
+		<ion-item> <b> Latitude: </b> {{item.latitude}} </ion-item>
+		<ion-item> <b> Longitude: </b> {{item.longitude}} </ion-item>
+	</ion-list>
+</ion-content>

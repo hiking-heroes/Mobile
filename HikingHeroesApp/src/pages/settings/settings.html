@@ -1,23 +1,37 @@
 <ion-header>
-	<ion-navbar> <!-- transparent hideBackButton -->
-		<button *ngIf="guest == true" ion-button small clear color="black" (click)="toSignIn()">
-			Sign In
-		</button>
-		<button *ngIf="guest == true" ion-button small clear color="black" (click)="toSignUp()">
-			Sign Up
-		</button>
-<!--		<button *ngIf="loggedIn == true" ion-button small clear color="black" (click)="signOut()">
-			Sign Out
-		</button>
--->
+	<ion-navbar color="primary"> <!-- transparent hideBackButton -->
 		<ion-buttons end>
+			<button *ngIf="guest == true" ion-button icon-only clear style="zoom: 1.3;" (click)="toSignIn()">
+				<ion-icon ios="ios-log-in-outline" md="ios-log-in-outline"></ion-icon>
+			</button>
+			<button *ngIf="guest == true" ion-button icon-only clear style="zoom: 1.3;" (click)="toSignUp()">
+				<ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
+			</button>
 			<button *ngIf="guest == false" ion-button icon-only clear style="zoom: 1.3;" (click)="signOut()">
 				<ion-icon ios="ios-log-out-outline" md="ios-log-out-outline"></ion-icon>
 			</button>
 		</ion-buttons>
+		<ion-title><h2>Settings</h2></ion-title>
 	</ion-navbar>
 </ion-header>
 
 <ion-content padding>
-
+	<h3> Change the app settings: </h3>
+		<ion-item>
+			<ion-label color="black" stacked> <h2> Translate the app: </h2> </ion-label>
+			<ion-select [(ngModel)]="language" name="language" placeholder="Choose your language">
+				<ion-option value="english">English</ion-option>
+				<ion-option value="russian">Русский</ion-option>
+				<ion-option value="francais">Francais</ion-option>
+				<ion-option value="deutsch">Deutsch</ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item>
+			<ion-label stacked> <h2> Change map mode: </h2> <br> <b *ngIf="mode == false"> Sing up for events </b> <b *ngIf="mode == true"> Create events</b> </ion-label>
+			<ion-toggle [(ngModel)]="mode" color="primary" checked="false" style="zoom: 1.5;" (ionChange)="changeMode()"></ion-toggle>
+		</ion-item>
+		<ion-item>
+			<ion-label stacked> <h2> Allow notifications: </h2> <br> <b *ngIf="notifications == false"> Not allowed </b> <b *ngIf="notifications == true"> Allowed </b> </ion-label>
+			<ion-toggle [(ngModel)]="notifications" color="primary" checked="false" style="zoom: 1.5;" (ionChange)="changeNotifications()"></ion-toggle>
+		</ion-item>
 </ion-content>

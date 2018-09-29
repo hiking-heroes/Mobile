@@ -11,6 +11,7 @@ import { SignInPage } from '../pages/sign-in/sign-in';
 import { SignUpPage } from '../pages/sign-up/sign-up';
 import { EventCreationPage } from '../pages/event-creation/event-creation';
 import { EventRegistrationPage } from '../pages/event-registration/event-registration';
+import { EventDetailsPage } from '../pages/event-details/event-details';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -28,7 +29,8 @@ import { RestProvider } from '../providers/rest/rest';
 	SignInPage,
 	SignUpPage,
 	EventCreationPage,
-	EventRegistrationPage
+	EventRegistrationPage,
+	EventDetailsPage
   ],
   imports: [
     BrowserModule,
@@ -45,7 +47,8 @@ import { RestProvider } from '../providers/rest/rest';
 	SignInPage,
 	SignUpPage,
 	EventCreationPage,
-	EventRegistrationPage
+	EventRegistrationPage,
+	EventDetailsPage
   ],
   providers: [
     StatusBar,

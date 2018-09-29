@@ -11,7 +11,6 @@ import { TabsPage } from '../tabs/tabs';
 export class SignInPage {
 	loading: any;
 	data: any;
-	loggedIn : boolean = false;
 	guest : boolean = true;
 	signInData = { email:'', password:'' };
 	
@@ -21,10 +20,8 @@ export class SignInPage {
 				public loadingCtrl: LoadingController,
 				private toastCtrl: ToastController) {
 					if (localStorage.getItem('token') === null) {
-						this.loggedIn = false;
 						this.guest = true;
 					} else {
-						this.loggedIn = true;
 						this.guest = false;
 					}
 	}
@@ -36,9 +33,9 @@ export class SignInPage {
 				this.loading.dismiss();
 				this.data = result;
 				if (this.data.guest == false) {
-					localStorage.setItem('token', this.data.token); // Add
-					localStorage.setItem('events', this.data.events);
-					this.loggedIn = true;
+					localStorage.setItem('token', this.data.token);
+					localStorage.setItem('events', JSON.stringify(this.data.events));
+					console.log(JSON.parse(localStorage.getItem('events')));
 					this.guest = false;
 					this.navCtrl.pop();
 				} else {
@@ -46,13 +43,10 @@ export class SignInPage {
 				}
 			}, (err) => {
 				this.loading.dismiss();
-			    this.presentToast(err);
-				
+			 //   this.presentToast(err);
 					localStorage.setItem('token', "123");
-					this.loggedIn = true;
 					this.guest = false;
 					this.navCtrl.pop();
-				
 			});
 		} else {
 			this.presentToast("Fields required!");

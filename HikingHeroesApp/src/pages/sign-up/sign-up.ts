@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { RestProvider } from '../../providers/rest/rest';
 import { TabsPage } from '../tabs/tabs';
-import { SignInPage } from '../sign-in/sign-in';
 
 @IonicPage()
 @Component({
@@ -12,7 +11,6 @@ import { SignInPage } from '../sign-in/sign-in';
 export class SignUpPage {
 	loading: any;
 	data: any;
-	loggedIn : boolean = false;
 	guest: boolean = true;
 	signUpData = { first_name:'', last_name:'', email:'', password:'' };
 	
@@ -22,10 +20,8 @@ constructor(public navCtrl: NavController,
 				public loadingCtrl: LoadingController,
 				private toastCtrl: ToastController) {
 					if (localStorage.getItem('token') === null) {
-						this.loggedIn = false;
 						this.guest = true;
 					} else {
-						this.loggedIn = true;
 						this.guest = false;
 					}
 	}
@@ -38,9 +34,9 @@ constructor(public navCtrl: NavController,
 				this.data = result;
 				console.log(this.data);
 				if (this.data.guest == false) {
-					localStorage.setItem('token', this.data.token); // Add
-					localStorage.setItem('events', this.data.events);
-					this.loggedIn = true;
+					localStorage.setItem('token', this.data.token);
+					localStorage.setItem('events', JSON.stringify(this.data.events));
+					console.log(JSON.parse(localStorage.getItem('events')));
 					this.guest = false;
 					this.navCtrl.pop();
 				} else {
@@ -48,7 +44,8 @@ constructor(public navCtrl: NavController,
 				}
 			}, (err) => {
 				this.loading.dismiss();
-			    this.presentToast(err);
+				this.navCtrl.pop();
+			//    this.presentToast(err);
 			});
 		} else {
 			this.presentToast("Fields required!");

@@ -1,11 +1,12 @@
 <ion-header>
-	<ion-navbar>
+	<ion-navbar color="primary">
 		<ion-title>Sign Up</ion-title>
 	</ion-navbar>
 </ion-header>
 
 <ion-content padding>
-	<form padding-top (submit)="signUp()">
+	<h3 *ngIf="guest == true"> <p text-center> Sign up for <br> Naviaddress account. </p> </h3>
+	<form (submit)="signUp()">
 		<ion-item>
 			<ion-label stacked>Name</ion-label>
 			<ion-input readonly="false" required [(ngModel)]="signUpData.first_name" name="first_name" type="text" pattern="[a-zA-Z]+$" placeholder="Your name" text-center></ion-input>
