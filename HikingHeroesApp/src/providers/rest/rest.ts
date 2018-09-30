@@ -188,5 +188,20 @@ export class RestProvider {
 				});
 		});	  
 	}
+	
+	notifications(device) {
+		return new Promise((resolve, reject) => {
+		//	this.http.post(this.apiUrl+'/events', eventData, {headers: {'Authorization': 'token'}})
+		let headers = new HttpHeaders().set("Authorization", "Bearer " + localStorage.getItem('token'));
+			this.http.post(this.apiUrl+'/notifications/devices', device, {headers})
+				.subscribe(res => {
+					console.log(res); // log
+					resolve(res);
+				}, (err) => {
+					console.log(err); // log
+					reject(err);
+				});
+		});	  
+	}
 
 }

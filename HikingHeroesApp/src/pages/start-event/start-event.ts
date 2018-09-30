@@ -37,17 +37,11 @@ export class StartEventPage {
 		if(this.eventData.name && this.eventData.event_start && this.eventData.event_end){
 			this.eventData.tags[0] = this.eventData.name; // sdsd
 			this.showLoader();
-			console.log(this.eventData);
 			this.restProvider.createEvent(this.eventData).then((result) => {
 				this.loading.dismiss();
 				this.data = result;
 				console.log(this.data);
-				if (this.data.Answer == 201) {
-					console.log("event created");
-					this.navCtrl.pop();
-				} else {
-					this.presentToast(this.data.Answer);
-				}
+				this.navCtrl.pop();
 			}, (err) => {
 				this.loading.dismiss();
 			    this.presentToast(err);

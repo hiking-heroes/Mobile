@@ -17,12 +17,21 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Geolocation } from '@ionic-native/geolocation';
 import { HttpClientModule } from '@angular/common/http';
+import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { RestProvider } from '../providers/rest/rest';
 
 @NgModule({
   declarations: [
     MyApp,
-	TabsPage
+	TabsPage, // To make apk delete below
+    HomePage,
+	MapPage,
+	SettingsPage,
+	SignInPage,
+	SignUpPage,
+	StartEventPage,
+	EventRegistrationPage,
+	DetailsEventPage
   ],
   imports: [
     BrowserModule,
@@ -45,6 +54,7 @@ import { RestProvider } from '../providers/rest/rest';
   providers: [
     StatusBar,
     SplashScreen,
+	Push,
     Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RestProvider
