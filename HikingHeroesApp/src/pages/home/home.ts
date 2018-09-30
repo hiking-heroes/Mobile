@@ -36,12 +36,10 @@ export class HomePage {
 			this.guest = false;
 			this.items = JSON.parse(localStorage.getItem('events'));
 		}
-		console.log(this.items);
 	}
 	
 	eventDetails(item){
 		this.navCtrl.push(EventDetailsPage, {item: item});
-	//	console.log(item);
 	}
 	
 	
@@ -55,19 +53,46 @@ export class HomePage {
 	}
 	
 	update() {
-		if (this.historyTimeout.dateFrom != '' && this.historyTimeout.dateTo != '') {
-			this.showLoader();
+		this.showLoader();
 			this.restProvider.update().then((result) => {
 				this.loading.dismiss();
 				this.data = result;
 				this.items = this.data.events;
+				localStorage.setItem('events', JSON.stringify(this.items));
+				this.clear();
 			}, (err) => {
 				this.loading.dismiss();
 				this.presentToast(err);
-			});
-		} else {
-			console.log("no");
+		});
+	}
+	
+	updateTimes() {
+		this.showLoader();
+			this.restProvider.update().then((result) => {
+				this.loading.dismiss();
+				this.data = result;
+				this.chooseEvents();
+			}, (err) => {
+				this.loading.dismiss();
+				this.presentToast(err);
+		});
+	}
+	
+	chooseEvents() {
+		this.items = [];
+		let k = 0;
+		for (let j = 0; j < this.data.events.length; j++) {
+			if (this.historyTimeout.dateFrom <= this.data.events[j].start && (this.historyTimeout.dateTo >= this.data.events[j].end || this.historyTimeout.dateTo == '')) {
+				this.items[k] = this.data.events[j];
+				k++;
+			}
 		}
+		localStorage.setItem('events', JSON.stringify(this.items));
+	}
+	
+	clear() {
+		this.historyTimeout.dateFrom = '';
+		this.historyTimeout.dateTo = '';
 	}
 	
 	signOut() {

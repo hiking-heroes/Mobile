@@ -20,7 +20,7 @@
 
 <ion-content padding>
 <!--	<p *ngIf="guest == false && items.length != 0" text-center><b> On this page you can view events <br> you've signed up for <br> and events you own.</b></p>
--->	<h3 *ngIf="guest == false && items.length == 0"> <p> You don't have any upcoming events yet. You can find them here after creating them or confirming your participation </p> </h3>
+-->	<h3 *ngIf="guest == false && items.length == 0"> <p text-center> You don't have any <br> upcoming events yet. </p> </h3>
 		
 	<h3 *ngIf="guest == false && items.length != 0"> Your upcoming events:</h3>
 <!--	<ion-list inset> -->
@@ -38,8 +38,8 @@
 		</ion-infinite-scroll> -->
 
 <!--	</ion-list> -->
-	<h3 *ngIf="guest == false && items.length != 0"> Or upload for certain times: </h3>
-	<form *ngIf="guest == false  && items.length != 0" (submit)="update()">
+	<h3 *ngIf="guest == false && (items.length != 0 || historyTimeout.dateFrom != '' || historyTimeout.dateTo != '')"> Or upload for certain times: </h3>
+	<form *ngIf="guest == false  && (items.length != 0 || historyTimeout.dateFrom != '' || historyTimeout.dateTo != '')" (submit)="updateTimes()">
 		<ion-item>
 			<ion-label stacked>Start date</ion-label>
 			<ion-datetime displayFormat="MMM DD, YYYY HH:mm" [(ngModel)]="historyTimeout.dateFrom" name="dateFrom" placeholder="Choose start date" text-center></ion-datetime>
@@ -50,8 +50,8 @@
 		</ion-item>
 		<p text-center>
 		    <button ion-button round icon-end  color="primary" type="submit">
-		    	 Upload Events<ion-icon ios="ios-arrow-round-down" md="ios-arrow-round-down"></ion-icon>
-		    </button>	
+		    	 Upload Events<ion-icon ios="ios-arrow-round-up" md="ios-arrow-round-up"></ion-icon>
+		    </button>
 		<p text-center>
 	</form>
 
@@ -67,16 +67,16 @@
 			Sign Up<ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
 		</button>
 	</p>
-	<p *ngIf="guest == true || (guest == false && items.length == 0)" text-center><b>
+	<p *ngIf="guest == true || (guest == false && items.length == 0 && historyTimeout.dateFrom == '' && historyTimeout.dateTo == '')" text-center><b>
 	With Naviaddress account and this app 
 	<br>
 	you can sign up for events in your city,
 	<br>
 	and even organize your own events! 
 	</b></p>
-	<p *ngIf="guest == true || (guest == false && items.length == 0)" text-center><b>
+	<p *ngIf="guest == true || (guest == false && items.length == 0 && historyTimeout.dateFrom == '' && historyTimeout.dateTo == '')" text-center><b>
 	Always yours, Hiking Heroes. 
 	</b></p>
-	<div *ngIf="guest == true || (guest == false && items.length == 0)" text-center><img width="100pt" align="center" src="assets/imgs/HikingHeroesLogo.png"></div>
+	<div *ngIf="guest == true || (guest == false && items.length == 0 && historyTimeout.dateFrom == '' && historyTimeout.dateTo == '')" text-center><img width="100pt" align="center" src="assets/imgs/HikingHeroesLogo.png"></div>
 	
 </ion-content>

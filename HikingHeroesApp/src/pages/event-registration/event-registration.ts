@@ -33,12 +33,8 @@ export class EventRegistrationPage {
 		this.restProvider.joinEvent(this.item.id).then((result) => {
 			this.loading.dismiss();
 			this.data = result;
-			if (this.data.answer == 200) {
-				console.log("event created");
-				this.navCtrl.pop();
-			} else {
-				console.log(this.data.answer);
-			}
+			console.log("event created");
+			this.navCtrl.pop();
 		}, (err) => {
 			this.loading.dismiss();
 			console.log(err);
@@ -51,7 +47,7 @@ export class EventRegistrationPage {
 	
 	showLoader(){
 		this.loading = this.loadingCtrl.create({
-			content: 'Creating event...'
+			content: 'Joining event...'
 		});
 		this.loading.present();
 	}

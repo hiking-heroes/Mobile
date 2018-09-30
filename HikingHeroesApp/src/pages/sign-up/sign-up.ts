@@ -36,7 +36,6 @@ constructor(public navCtrl: NavController,
 				if (this.data.guest == false) {
 					localStorage.setItem('token', this.data.token);
 					localStorage.setItem('events', JSON.stringify(this.data.events));
-					console.log(JSON.parse(localStorage.getItem('events')));
 					this.guest = false;
 					this.navCtrl.pop();
 				} else {
@@ -45,7 +44,6 @@ constructor(public navCtrl: NavController,
 			}, (err) => {
 				this.loading.dismiss();
 				this.navCtrl.pop();
-			//    this.presentToast(err);
 			});
 		} else {
 			this.presentToast("Fields required!");

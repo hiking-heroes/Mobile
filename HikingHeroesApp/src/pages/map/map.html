@@ -11,16 +11,17 @@
 		<ion-title><h2>Map</h2></ion-title>
 	</ion-navbar>
 	<ion-navbar>
+		<form (submit)="updateTimes()">
 			<ion-grid no-margin no-padding>
 				<ion-row>
 					<ion-col no-padding>
 						<ion-item id="tags" no-margin>
 							<ion-label stacked>Search with tags</ion-label>
-							<ion-input readonly="false" required [(ngModel)]="tagsData.tags" name="tags" type="text" placeholder="Event tags"></ion-input>
+							<ion-input readonly="false" required [(ngModel)]="tags" name="tags" type="text" placeholder="Event tags"></ion-input>
 						</ion-item>
 					</ion-col>
 					<ion-col no-padding>
-							<button no-margin id="apply" ion-button icon-only clear style="zoom: 1.5;" (click)="apply()">
+							<button no-margin id="apply" ion-button icon-only clear style="zoom: 1.5;" type="submit">
 								<ion-icon name="checkmark-circle-outline"></ion-icon>
 							</button>
 					</ion-col>
@@ -28,16 +29,17 @@
 				<ion-row>
 					<ion-col no-padding>
 						<ion-item no-margin>
-							<ion-datetime displayFormat="DD.MM.YY HH:mm" [(ngModel)]="historyTimeout.dateFrom" name="dateFrom" placeholder="Event start"></ion-datetime>
+							<ion-datetime displayFormat="DD.MM.YY HH:mm" [(ngModel)]="starts" name="starts" placeholder="Event start"></ion-datetime>
 						</ion-item>
 					</ion-col>
 					<ion-col no-padding>
 						<ion-item no-margin>
-							<ion-datetime displayFormat="DD.MM.YY HH:mm" [(ngModel)]="historyTimeout.dateTo" name="dateTo" placeholder="Event end"></ion-datetime>
+							<ion-datetime displayFormat="DD.MM.YY HH:mm" [(ngModel)]="ends" name="ends" placeholder="Event end"></ion-datetime>
 						</ion-item>
 					</ion-col>
 				</ion-row>
 			</ion-grid>
+		</form>
 	</ion-navbar>
 </ion-header>
 

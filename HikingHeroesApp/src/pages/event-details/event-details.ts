@@ -9,13 +9,15 @@ import { RestProvider } from '../../providers/rest/rest';
 })
 export class EventDetailsPage {
 	item: any;
+	loading: any;
+	data: any;
 
 	constructor(public navCtrl: NavController,
 				public navParams: NavParams,
 				public restProvider: RestProvider,
 				public loadingCtrl: LoadingController,
 				private toastCtrl: ToastController) {
-		this.item = navParams.get('item');
+					this.item = navParams.get('item');
 	}
   
   	exitEvent() {
@@ -23,12 +25,7 @@ export class EventDetailsPage {
 		this.restProvider.exitEvent(this.item.id).then((result) => {
 			this.loading.dismiss();
 			this.data = result;
-			if (this.data.answer == 200) {
-				console.log("event created");
-				this.navCtrl.pop();
-			} else {
-				console.log(this.data.answer);
-			}
+			this.navCtrl.pop();
 		}, (err) => {
 			this.loading.dismiss();
 			console.log(err);
@@ -41,7 +38,7 @@ export class EventDetailsPage {
 	
 	showLoader(){
 		this.loading = this.loadingCtrl.create({
-			content: 'Creating event...'
+			content: 'Leaving event...'
 		});
 		this.loading.present();
 	}

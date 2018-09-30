@@ -35,7 +35,6 @@ export class SignInPage {
 				if (this.data.guest == false) {
 					localStorage.setItem('token', this.data.token);
 					localStorage.setItem('events', JSON.stringify(this.data.events));
-					console.log(JSON.parse(localStorage.getItem('events')));
 					this.guest = false;
 					this.navCtrl.pop();
 				} else {
@@ -43,10 +42,7 @@ export class SignInPage {
 				}
 			}, (err) => {
 				this.loading.dismiss();
-			 //   this.presentToast(err);
-					localStorage.setItem('token', "123");
-					this.guest = false;
-					this.navCtrl.pop();
+			    this.presentToast(err);
 			});
 		} else {
 			this.presentToast("Fields required!");

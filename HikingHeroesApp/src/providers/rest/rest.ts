@@ -101,8 +101,6 @@ export class RestProvider {
 	
 	getEvent(id) {
 		return new Promise((resolve, reject) => {
-		//	let headers = new HttpHeaders();
-		//	headers.append('content-type', 'application/json');
 			this.http.get(this.apiUrl+"/events/"+id)
 				.subscribe(res => {					
 					console.log(res); // log
@@ -111,21 +109,21 @@ export class RestProvider {
 					console.log(err); // log
 					reject(err);
 				});
-		});	  
+		});
 	}
 	
 	joinEvent(id) {
 		return new Promise((resolve, reject) => {
 		//	this.http.post(this.apiUrl+'/events', eventData, {headers: {'Authorization': 'token'}})
-		let headers = new HttpHeaders().set("Authorization", "Bearer " + localStorage.getItem('token'));
-			this.http.put(this.apiUrl+'/events/'+id+'/join', {headers})
-				.subscribe(res => {
-					console.log(res); // log
-					resolve(res);
-				}, (err) => {
-					console.log(err); // log
-					reject(err);
-				});
+	//	let headers = new HttpHeaders({"Authorization", "Bearer " + localStorage.getItem('token')});
+		this.http.put(this.apiUrl+'/events/'+id+'/join', id, {headers: {'Authorization': "Bearer " + localStorage.getItem('token')}})
+			.subscribe(res => {
+				console.log(res); // log
+				resolve(res);
+			}, (err) => {
+				console.log(err); // log
+				reject(err);
+			});
 		});	  
 	}
 	
@@ -133,14 +131,14 @@ export class RestProvider {
 		return new Promise((resolve, reject) => {
 		//	this.http.post(this.apiUrl+'/events', eventData, {headers: {'Authorization': 'token'}})
 		let headers = new HttpHeaders().set("Authorization", "Bearer " + localStorage.getItem('token'));
-			this.http.put(this.apiUrl+'/events/'+id+'/exit', {headers})
-				.subscribe(res => {
-					console.log(res); // log
-					resolve(res);
-				}, (err) => {
-					console.log(err); // log
-					reject(err);
-				});
+		this.http.put(this.apiUrl+'/events/'+id+'/exit', id, {headers})
+			.subscribe(res => {
+				console.log(res); // log
+				resolve(res);
+			}, (err) => {
+				console.log(err); // log
+				reject(err);
+			});
 		});	  
 	}
 	
@@ -166,8 +164,6 @@ export class RestProvider {
 			this.http.post(this.apiUrl+'updateAddress', addressData, {headers: headers})
 				.subscribe(res => {
 					
-					
-					
 					console.log(res); // log
 					resolve(res);
 				}, (err) => {
@@ -183,8 +179,6 @@ export class RestProvider {
 			headers.append('content-type', 'application/json');
 			this.http.post(this.apiUrl+'deleteAddress', addressData, {headers: headers})
 				.subscribe(res => {
-					
-					
 					
 					console.log(res); // log
 					resolve(res);
