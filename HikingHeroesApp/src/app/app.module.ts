@@ -9,9 +9,9 @@ import { MapPage } from '../pages/map/map';
 import { SettingsPage } from '../pages/settings/settings';
 import { SignInPage } from '../pages/sign-in/sign-in';
 import { SignUpPage } from '../pages/sign-up/sign-up';
-import { EventCreationPage } from '../pages/event-creation/event-creation';
+import { StartEventPage } from '../pages/start-event/start-event';
 import { EventRegistrationPage } from '../pages/event-registration/event-registration';
-import { EventDetailsPage } from '../pages/event-details/event-details';
+import { DetailsEventPage } from '../pages/details-event/details-event';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -22,15 +22,7 @@ import { RestProvider } from '../providers/rest/rest';
 @NgModule({
   declarations: [
     MyApp,
-	TabsPage,
-    HomePage,
-	MapPage,
-	SettingsPage,
-	SignInPage,
-	SignUpPage,
-	EventCreationPage,
-	EventRegistrationPage,
-	EventDetailsPage
+	TabsPage
   ],
   imports: [
     BrowserModule,
@@ -46,9 +38,9 @@ import { RestProvider } from '../providers/rest/rest';
 	SettingsPage,
 	SignInPage,
 	SignUpPage,
-	EventCreationPage,
+	StartEventPage,
 	EventRegistrationPage,
-	EventDetailsPage
+	DetailsEventPage
   ],
   providers: [
     StatusBar,

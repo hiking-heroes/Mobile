@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { RestProvider } from '../../providers/rest/rest';
-import { EventCreationPage } from '../event-creation/event-creation';
+import { StartEventPage } from '../start-event/start-event';
 import { EventRegistrationPage } from '../event-registration/event-registration';
 import { SignInPage } from '../sign-in/sign-in';
 import { SignUpPage } from '../sign-up/sign-up';
@@ -40,6 +40,7 @@ export class MapPage {
 					} else {
 						this.guest = false;
 					}
+					localStorage.setItem('mode', 'false');
 					this.updateTimes();
 	}
 	
@@ -64,6 +65,13 @@ export class MapPage {
 		if (this.map == undefined) {
 			this.map = leaflet.map("map").fitWorld();
 		}
+	}
+	
+	ionViewWillLeave() {
+		this.starts = '';
+		this.ends = '';
+		localStorage.setItem('starts', this.starts);
+		localStorage.setItem('ends', this.ends);
 	}
 
 	loadmap() {
@@ -94,6 +102,7 @@ export class MapPage {
 			this.map.addLayer(markerGroup);
 		}).on('locationerror', (err) => {
 			this.map.addLayer(markerGroup);
+			this.map.setView([59.891355, 30.298549], 9);
 			// alert(err.message);
 		})
 		
@@ -160,7 +169,7 @@ export class MapPage {
 				let lng = e.latlng.lng;
 				
 				let marker = leaflet.marker([lat, lng], {icon: BCLIcon}).on('click', function(ee) {
-					navCtrl.push(EventCreationPage, {latitude : lat, longitude : lng});
+					navCtrl.push(StartEventPage, {latitude : lat, longitude : lng});
 					map.removeLayer(marker);
 				});
 				marker.addTo(map).bindPopup("Tap this marker to" + "<br>" + "attach an event").openPopup();

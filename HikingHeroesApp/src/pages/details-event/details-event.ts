@@ -4,10 +4,10 @@ import { RestProvider } from '../../providers/rest/rest';
 
 @IonicPage()
 @Component({
-  selector: 'page-event-details',
-  templateUrl: 'event-details.html',
+  selector: 'page-details-event',
+  templateUrl: 'details-event.html',
 })
-export class EventDetailsPage {
+export class DetailsEventPage {
 	item: any;
 	loading: any;
 	data: any;
@@ -33,7 +33,7 @@ export class EventDetailsPage {
 	}
 
 	ionViewDidLoad() {
-		console.log('ionViewDidLoad EventDetailsPage');
+		console.log('ionViewDidLoad DetailsEventPage');
 	}
 	
 	showLoader(){

@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController, ToastController
 import { RestProvider } from '../../providers/rest/rest';
 import { SignInPage } from '../sign-in/sign-in';
 import { SignUpPage } from '../sign-up/sign-up';
-import { EventDetailsPage } from '../event-details/event-details';
+import { DetailsEventPage } from '../details-event/details-event';
 
 @IonicPage()
 @Component({
@@ -39,7 +39,7 @@ export class HomePage {
 	}
 	
 	eventDetails(item){
-		this.navCtrl.push(EventDetailsPage, {item: item});
+		this.navCtrl.push(DetailsEventPage, {item: item});
 	}
 	
 	

@@ -4,10 +4,10 @@ import { RestProvider } from '../../providers/rest/rest';
 
 @IonicPage()
 @Component({
-  selector: 'page-event-creation',
-  templateUrl: 'event-creation.html',
+  selector: 'page-start-event',
+  templateUrl: 'start-event.html',
 })
-export class EventCreationPage {
+export class StartEventPage {
 		
 	loading: any;
 	data: any;
@@ -30,7 +30,7 @@ export class EventCreationPage {
 				}
 
 	ionViewDidLoad() {
-		console.log('ionViewDidLoad EventCreationPage');
+    console.log('ionViewDidLoad StartEventPage');
 	}
 	
 	createEvent() {
