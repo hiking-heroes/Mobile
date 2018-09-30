@@ -7,11 +7,37 @@
 			<button *ngIf="guest == true" ion-button icon-only clear style="zoom: 1.3;" (click)="toSignUp()">
 				<ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
 			</button>
-			<button *ngIf="guest == false" ion-button icon-only clear style="zoom: 1.3;" (click)="signOut()">
-				<ion-icon ios="ios-log-out-outline" md="ios-log-out-outline"></ion-icon>
-			</button>
 		</ion-buttons>
 		<ion-title><h2>Map</h2></ion-title>
+	</ion-navbar>
+	<ion-navbar>
+			<ion-grid no-margin no-padding>
+				<ion-row>
+					<ion-col no-padding>
+						<ion-item id="tags" no-margin>
+							<ion-label stacked>Search with tags</ion-label>
+							<ion-input readonly="false" required [(ngModel)]="tagsData.tags" name="tags" type="text" placeholder="Event tags"></ion-input>
+						</ion-item>
+					</ion-col>
+					<ion-col no-padding>
+							<button no-margin id="apply" ion-button icon-only clear style="zoom: 1.5;" (click)="apply()">
+								<ion-icon name="checkmark-circle-outline"></ion-icon>
+							</button>
+					</ion-col>
+				</ion-row>
+				<ion-row>
+					<ion-col no-padding>
+						<ion-item no-margin>
+							<ion-datetime displayFormat="DD.MM.YY HH:mm" [(ngModel)]="historyTimeout.dateFrom" name="dateFrom" placeholder="Event start"></ion-datetime>
+						</ion-item>
+					</ion-col>
+					<ion-col no-padding>
+						<ion-item no-margin>
+							<ion-datetime displayFormat="DD.MM.YY HH:mm" [(ngModel)]="historyTimeout.dateTo" name="dateTo" placeholder="Event end"></ion-datetime>
+						</ion-item>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
 	</ion-navbar>
 </ion-header>
 
@@ -20,23 +46,4 @@
 		<div id="map">
 		</div>
 	</div>
-	
-	<h3> Manage your search:</h3>
-	
-	<ion-list id="tags">
-		<ion-item item-left>
-			<ion-label stacked>Search with tags</ion-label>
-			<ion-input readonly="false" required [(ngModel)]="tagsData.tags" name="tags" type="text" placeholder="Event tags" text-center></ion-input>
-		</ion-item>
-		<ion-item item-left>
-			<ion-datetime id="start" displayFormat="MMM DD, YYYY HH:mm" [(ngModel)]="historyTimeout.dateFrom" name="dateFrom" placeholder="Event start date"></ion-datetime>
-		</ion-item>
-		<ion-item item-left>
-			<ion-datetime displayFormat="MMM DD, YYYY HH:mm" [(ngModel)]="historyTimeout.dateTo" name="dateTo" placeholder="Event end date"></ion-datetime>
-		</ion-item>
-		<button id="apply" ion-button icon-only clear style="zoom: 1.5;" (click)="apply()">
-			<ion-icon name="checkmark-circle-outline"></ion-icon>
-		</button>
-	</ion-list>
-
 </ion-content>

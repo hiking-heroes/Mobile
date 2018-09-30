@@ -12,7 +12,14 @@
 		<ion-item> <b> Starts: </b> {{item.start}} </ion-item>
 		<ion-item> <b> Ends: </b> {{item.end}} </ion-item>
 		<ion-item> <b> Seats: </b> {{item.seats.free}}/{{item.seats.total}} </ion-item>
+		<p text-center>
+			<button ion-button round icon-end color="green" (click)="exitEvent()">
+				Exit<ion-icon name="checkmark-circle-outline"></ion-icon>
+			</button>
+		</p>
 		<ion-item> <b> Latitude: </b> {{item.latitude}} </ion-item>
 		<ion-item> <b> Longitude: </b> {{item.longitude}} </ion-item>
+		<ion-item> <b> Tags: </b> {{item.tags}} </ion-item>
+		More details with more detailed event.
 	</ion-list>
 </ion-content>

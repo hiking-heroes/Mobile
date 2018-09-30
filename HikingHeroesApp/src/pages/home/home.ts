@@ -44,6 +44,8 @@ export class HomePage {
 	//	console.log(item);
 	}
 	
+	
+	
 	toSignIn() {
 		this.navCtrl.push(SignInPage);
 	}
@@ -53,15 +55,19 @@ export class HomePage {
 	}
 	
 	update() {
-		this.showLoader();	
-		this.restProvider.update().then((result) => {
-			this.loading.dismiss();
-			this.data = result;
-			this.items = this.data.events;
-		}, (err) => {
-			this.loading.dismiss();
-		    this.presentToast(err);
-		});
+		if (this.historyTimeout.dateFrom != '' && this.historyTimeout.dateTo != '') {
+			this.showLoader();
+			this.restProvider.update().then((result) => {
+				this.loading.dismiss();
+				this.data = result;
+				this.items = this.data.events;
+			}, (err) => {
+				this.loading.dismiss();
+				this.presentToast(err);
+			});
+		} else {
+			console.log("no");
+		}
 	}
 	
 	signOut() {

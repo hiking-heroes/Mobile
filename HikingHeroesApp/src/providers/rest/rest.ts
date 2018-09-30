@@ -84,11 +84,56 @@ export class RestProvider {
 		});
 	}
 	
-	getEvents(events) {
+	getEvents(bounds) {
 		return new Promise((resolve, reject) => {
-			let headers = new HttpHeaders();
-			headers.append('content-type', 'application/json');
-			this.http.get(this.apiUrl+"/events"+events, {headers: headers})
+		//	let headers = new HttpHeaders();
+		//	headers.append('content-type', 'application/json');
+			this.http.get(this.apiUrl+"/events"+bounds)
+				.subscribe(res => {
+					console.log(res); // log
+					resolve(res);
+				}, (err) => {
+					console.log(err); // log
+					reject(err);
+				});
+		});	  
+	}
+	
+	getEvent(id) {
+		return new Promise((resolve, reject) => {
+		//	let headers = new HttpHeaders();
+		//	headers.append('content-type', 'application/json');
+			this.http.get(this.apiUrl+"/events/"+id)
+				.subscribe(res => {					
+					console.log(res); // log
+					resolve(res);
+				}, (err) => {
+					console.log(err); // log
+					reject(err);
+				});
+		});	  
+	}
+	
+	joinEvent(id) {
+		return new Promise((resolve, reject) => {
+		//	this.http.post(this.apiUrl+'/events', eventData, {headers: {'Authorization': 'token'}})
+		let headers = new HttpHeaders().set("Authorization", "Bearer " + localStorage.getItem('token'));
+			this.http.put(this.apiUrl+'/events/'+id+'/join', {headers})
+				.subscribe(res => {
+					console.log(res); // log
+					resolve(res);
+				}, (err) => {
+					console.log(err); // log
+					reject(err);
+				});
+		});	  
+	}
+	
+	exitEvent(id) {
+		return new Promise((resolve, reject) => {
+		//	this.http.post(this.apiUrl+'/events', eventData, {headers: {'Authorization': 'token'}})
+		let headers = new HttpHeaders().set("Authorization", "Bearer " + localStorage.getItem('token'));
+			this.http.put(this.apiUrl+'/events/'+id+'/exit', {headers})
 				.subscribe(res => {
 					console.log(res); // log
 					resolve(res);
@@ -101,18 +146,7 @@ export class RestProvider {
 	
 	createEvent(eventData) {
 		return new Promise((resolve, reject) => {
-	/*		let headerJson = {
-			'Authorization':localStorage.getItem('token')
-			}
-			let headers = new HttpHeaders(headerJson);
-					//	headers = headers.append('Authorization', localStorage.getItem('token'));
-			//	console.log(headers);
 		//	this.http.post(this.apiUrl+'/events', eventData, {headers: {'Authorization': 'token'}})
-		//	headers.append('content-type', 'application/json');
-		*/
-			
-		//	console.log(JSON.stringify(eventData));
-		
 		let headers = new HttpHeaders().set("Authorization", "Bearer " + localStorage.getItem('token'));
 			this.http.post(this.apiUrl+'/events', eventData, {headers})
 				.subscribe(res => {
@@ -148,24 +182,6 @@ export class RestProvider {
 			let headers = new HttpHeaders();
 			headers.append('content-type', 'application/json');
 			this.http.post(this.apiUrl+'deleteAddress', addressData, {headers: headers})
-				.subscribe(res => {
-					
-					
-					
-					console.log(res); // log
-					resolve(res);
-				}, (err) => {
-					console.log(err); // log
-					reject(err);
-				});
-		});	  
-	}
-	
-	getAddress(address) {
-		return new Promise((resolve, reject) => {
-			let headers = new HttpHeaders();
-			headers.append('content-type', 'application/json');
-			this.http.get(this.naviApiUrl+"Addresses/"+address, {headers: headers})
 				.subscribe(res => {
 					
 					

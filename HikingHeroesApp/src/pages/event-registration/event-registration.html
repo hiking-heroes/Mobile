@@ -1,18 +1,25 @@
-<!--
-  Generated template for the EventRegistrationPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>EventRegistration</ion-title>
-  </ion-navbar>
-
+	<ion-navbar color="primary">
+		<ion-title>Event Registration</ion-title>
+	</ion-navbar>
 </ion-header>
 
-
 <ion-content padding>
-
+	<h3> This event details: </h3>
+	<ion-list inset no-lines>
+		<ion-item> <b> Name: </b> {{item.name}} </ion-item>
+		<ion-item> <b> Address: </b> [{{item.container}}]{{item.naviaddress}} </ion-item>
+		<ion-item> <b> Starts: </b> {{item.start}} </ion-item>
+		<ion-item> <b> Ends: </b> {{item.end}} </ion-item>
+		<ion-item> <b> Seats: </b> {{item.seats.free}}/{{item.seats.total}} </ion-item>
+		<p text-center>
+			<button ion-button round icon-end color="green" (click)="joinEvent()">
+				Join<ion-icon name="checkmark-circle-outline"></ion-icon>
+			</button>
+		</p>
+		<ion-item> <b> Latitude: </b> {{item.latitude}} </ion-item>
+		<ion-item> <b> Longitude: </b> {{item.longitude}} </ion-item>
+		<ion-item> <b> Tags: </b> {{item.tags}} </ion-item>
+		More details with more detailed event.
+	</ion-list>
 </ion-content>

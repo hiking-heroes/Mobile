@@ -58,7 +58,6 @@ export class EventCreationPage {
 		}		
 	}
 	
-	
 	showLoader(){
 		this.loading = this.loadingCtrl.create({
 			content: 'Creating event...'

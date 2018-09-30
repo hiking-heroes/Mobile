@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the EventRegistrationPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
+import { RestProvider } from '../../providers/rest/rest';
 
 @IonicPage()
 @Component({
@@ -15,11 +9,64 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class EventRegistrationPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+	loading: any;
+	data: any;
+	guest : boolean = true;
+	id = '';
+	item: any;
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EventRegistrationPage');
-  }
+	constructor(public navCtrl: NavController,
+				public navParams: NavParams,
+				public restProvider: RestProvider,
+				public loadingCtrl: LoadingController,
+				private toastCtrl: ToastController) {
+					if (localStorage.getItem('token') === null) {
+						this.guest = true;
+					} else {
+						this.guest = false;
+						this.item = navParams.get('item');
+					}
+	}
+	
+	joinEvent() {
+		this.showLoader();
+		this.restProvider.joinEvent(this.item.id).then((result) => {
+			this.loading.dismiss();
+			this.data = result;
+			if (this.data.answer == 200) {
+				console.log("event created");
+				this.navCtrl.pop();
+			} else {
+				console.log(this.data.answer);
+			}
+		}, (err) => {
+			this.loading.dismiss();
+			console.log(err);
+		});	
+	}
+
+	ionViewDidLoad() {
+		console.log('ionViewDidLoad EventRegistrationPage');
+	}
+	
+	showLoader(){
+		this.loading = this.loadingCtrl.create({
+			content: 'Creating event...'
+		});
+		this.loading.present();
+	}
+
+	presentToast(msg) {
+		let toast = this.toastCtrl.create({
+			message: msg,
+			duration: 3000,
+			position: 'bottom',
+			dismissOnPageChange: true
+		});
+		toast.onDidDismiss(() => {
+			console.log('Dismissed toast');
+		});
+		toast.present();
+	}
 
 }
